@@ -1,0 +1,4 @@
+{
+  "containerName": "ssrs-node-1",
+  "command": "Restart-Service -Name PowerBIReportServer; Start-Sleep -Seconds 20; $ns = 'root\\Microsoft\\SqlServer\\ReportServer\\RS_PBIRS\\V15\\Admin'; $setting = Get-CimInstance -Namespace $ns -ClassName MSReportServer_ConfigurationSetting; 'IsInitialized=' + $setting.IsInitialized; 'Listen=' + (Get-NetTCPConnection -LocalPort 80 -State Listen).Count"
+}

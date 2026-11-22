@@ -1,0 +1,65 @@
+services:
+
+  dbe14:
+    image: sqlserver-instance:latest
+    container_name: dbe14
+    hostname: dbe14
+    command: ["powershell", "-NoProfile", "-Command", "Start-Service MSSQLSERVER; while ($$true) { Start-Sleep -Seconds 60 }"]
+    volumes:
+      - type: bind
+        source: ..\..\..\src\sqlserver
+        target: C:\payload
+        read_only: true
+      - type: bind
+        source: ..\..\host_bind_mount\share
+        target: C:\share
+    networks:
+      sqlnet:
+        ipv4_address: 172.30.0.20
+
+  ssrs-node-1:
+    image: sqlserver-instance:latest
+    container_name: ssrs-node-1
+    hostname: ssrs-node-1
+    command: ["powershell", "-NoProfile", "-Command", "Start-Service PowerBIReportServer; while ($$true) { Start-Sleep -Seconds 60 }"]
+    depends_on:
+      - dbe14
+    volumes:
+      - type: bind
+        source: ..\..\..\src\sqlserver
+        target: C:\payload
+        read_only: true
+      - type: bind
+        source: ..\..\host_bind_mount\share
+        target: C:\share
+    networks:
+      sqlnet:
+        ipv4_address: 172.30.0.21
+
+  ssrs-node-2:
+    image: sqlserver-instance:latest
+    container_name: ssrs-node-2
+    hostname: ssrs-node-2
+    command: ["powershell", "-NoProfile", "-Command", "Start-Service PowerBIReportServer; while ($$true) { Start-Sleep -Seconds 60 }"]
+    depends_on:
+      - dbe14
+    volumes:
+      - type: bind
+        source: ..\..\..\src\sqlserver
+        target: C:\payload
+        read_only: true
+      - type: bind
+        source: ..\..\host_bind_mount\share
+        target: C:\share
+    networks:
+      sqlnet:
+        ipv4_address: 172.30.0.22
+
+networks:
+
+  sqlnet:
+    name: sql-mvp
+    driver: nat
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

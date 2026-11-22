@@ -1,0 +1,8 @@
+{
+  "mediaSourceFolder": "D:\\install-media",
+  "hostMediaFolderName": "host_bind_mount",
+  "markerFileName": "media-complete.txt",
+  "isoFileName": "SQLServer2025-x64-ENU-EntDev.iso",
+  "setupFolderName": "sqlsetup",
+  "filesToCopy": [ "PowerBIReportServer.exe" ]
+}

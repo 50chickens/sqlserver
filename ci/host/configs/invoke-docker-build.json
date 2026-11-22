@@ -1,0 +1,4 @@
+{
+  "dockerBuildFolder": "..\\docker_build",
+  "imageName": "sqlserver-instance"
+}

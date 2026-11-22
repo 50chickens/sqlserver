@@ -1,0 +1,7 @@
+{
+  "composePath": "C:\\docker\\docker-compose.exe",
+  "composeFilePath": "docker_compose\\docker-compose.yml",
+  "projectName": "sql-mvp",
+  "expectedRunningCount": 3,
+  "waitTimeoutSeconds": 300
+}
