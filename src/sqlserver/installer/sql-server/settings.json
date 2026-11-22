@@ -1,0 +1,7 @@
+{
+  "mediaFolderPath": "C:\\host_bind_mount\\sqlsetup",
+  "installerFileName": "setup.exe",
+  "instanceName": "MSSQLSERVER",
+  "sysAdminAccount": "BUILTIN\\Administrators",
+  "successCodes": [0, 3010]
+}

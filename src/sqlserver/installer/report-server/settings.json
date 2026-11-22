@@ -1,0 +1,20 @@
+{
+  "mediaFolderPath": "C:\\host_bind_mount",
+  "installerFileName": "PowerBIReportServer.exe",
+  "instanceName": "PBIRS",
+  "edition": "DEV",
+  "databaseServerName": "dbe14",
+  "databaseName": "ReportServer",
+  "databaseCredentialsType": 2,
+  "databaseUserName": "sa",
+  "databasePassword": "<set-by-operator>",
+  "encryptionKeyPassword": "<set-by-operator>",
+  "encryptionKeySharePath": "C:\\share\\reportserver.snk",
+  "lcid": 1033,
+  "wmiNamespace": "root\\Microsoft\\SqlServer\\ReportServer\\RS_PBIRS\\V15\\Admin",
+  "reportServerVirtualDirectory": "ReportServer",
+  "portalVirtualDirectory": "Reports",
+  "reportServerUrl": "http://+:80/ReportServer",
+  "portalUrl": "http://+:80/Reports",
+  "successCodes": [0, 3010]
+}
