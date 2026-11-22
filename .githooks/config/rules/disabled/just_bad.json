@@ -1,0 +1,24 @@
+{
+  "rules": [
+    { 
+      "name": "useless-returns", 
+      "regex": "return ''", 
+      "description": "Avoid useless returns",
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "banned-characters", 
+      "regex": "'", 
+      "description": "Avoid banned chars",
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "variables-to-arrays", 
+      "regex": "\\@\\(\\$", 
+      "description": "Dont force arrays",
+      "appliesTo": ["powershell"] 
+      
+    }
+  ]
+}
+

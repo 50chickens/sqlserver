@@ -1,0 +1,8 @@
+{
+  "include": [ "*.ps1", "*.psm1", "*.psd1", "*.cs", "*.csx", "*.md" ],
+  "exclude": [ "*.webp" ],
+  "languages": [
+    { "name": "powershell", "globs": [ "*.ps1", "*.psm1", "*.psd1" ] },
+    { "name": "csharp", "globs": [ "*.cs", "*.csx" ] }
+  ]
+}

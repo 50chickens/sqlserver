@@ -1,0 +1,11 @@
+{
+  "rules": [
+    { 
+      "name": "return-using-calculated-values", 
+      "regex": "return (@|\\()", 
+      "description": "Prevent return values using calculated values", 
+      "warnOnly": false, 
+      "appliesTo": ["powershell"] 
+    }
+  ]
+}

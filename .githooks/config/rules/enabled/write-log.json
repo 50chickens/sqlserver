@@ -1,0 +1,13 @@
+{
+  "rules": [
+    { 
+      "multiline": true,
+      "name": "write-host-outside-write-log", 
+      "allowedRegex" : "(?s)function Write-Log.*?\\}",
+      "regex": "Write-Host", 
+      "scopeName": "Write-Log",
+      "description": "Prevent Write-Host anywhere except inside the body of a Write-Log function",
+      "appliesTo": ["powershell"] 
+    }
+  ]
+}

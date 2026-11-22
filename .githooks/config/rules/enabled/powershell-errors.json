@@ -1,0 +1,5 @@
+{
+  "rules": [
+    { "name": "silently-continue", "regex": "SilentlyContinue", "description": "Let the failure surface", "appliesTo": ["powershell"] }
+  ]
+}

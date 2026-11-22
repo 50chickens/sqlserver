@@ -1,0 +1,21 @@
+{
+  "rules": [
+    { "name": "banned-word-budget", "regex": "\\bbudget\\b", "description": "Banned word" },
+    { "name": "banned-word-charged", "regex": "\\bcharged\\b", "description": "Banned word" },
+    { "name": "banned-word-claims", "regex": "\\bclaims\\b", "description": "Banned word" },
+    { "name": "banned-word-dropped", "regex": "\\bdropped\\b", "description": "Banned word" },
+    { "name": "banned-word-guard", "regex": "\\bguard\\b", "description": "Banned word" },
+    { "name": "banned-word-held", "regex": "\\bheld\\b", "description": "Banned word" },
+    { "name": "banned-word-fault", "regex": "\\bfault\\b", "description": "Banned word" },
+    { "name": "banned-word-faulted", "regex": "\\bfaulted\\b", "description": "Banned word" },
+    { "name": "banned-word-fenced", "regex": "\\bfenced\\b", "description": "Banned word" },
+    { "name": "banned-word-fencing", "regex": "\\bfencing\\b", "description": "Banned word" },
+    { "name": "banned-word-judged", "regex": "\\bjudged\\b", "description": "Banned word" },
+    { "name": "banned-word-lease", "regex": "\\blease\\b", "description": "Banned word" },
+    { "name": "banned-word-kept", "regex": "\\bkept\\b", "description": "Banned word" },
+    { "name": "banned-word-kind", "regex": "\\bkind\\b", "description": "Banned word" },
+    { "name": "banned-word-record", "regex": "\\brecord\\b", "description": "Banned word" },
+    { "name": "banned-word-refused", "regex": "\\brefused\\b", "description": "Banned word" },
+    { "name": "banned-word-subject", "regex": "\\bsubject\\b", "description": "Banned word" }
+  ]
+}

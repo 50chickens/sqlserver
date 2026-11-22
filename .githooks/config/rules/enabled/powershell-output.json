@@ -1,0 +1,6 @@
+{
+  "rules": [
+    { "name": "write-output", "regex": "Write-Output\\b", "description": "Report through Write-Log", "appliesTo": ["powershell"] },
+    { "name": "select-string", "regex": "Select-String\\b", "description": "Search by script rather than in the terminal", "appliesTo": ["powershell"] }
+  ]
+}

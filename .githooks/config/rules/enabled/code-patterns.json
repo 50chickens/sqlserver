@@ -1,0 +1,55 @@
+{
+  "rules": [
+    { 
+      "name": "return-using-calculated-values", 
+      "regex": "return (@|\\()", 
+      "description": "Prevent return values using calculated values", 
+      "warnOnly": false, 
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "assign-using-calculated-values", 
+      "regex": "= \\(@", 
+      "description": "Prevent assignment using calculated values", 
+      "warnOnly": false, 
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "no-not-usage", 
+      "regex": "-not\\b", 
+      "description": "Prevent usage of -not", 
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "foreach-statement", 
+      "regex": "foreach\\s*\\(", 
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "join-path", 
+      "regex": "Join-Path", 
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "console-write", 
+      "regex": "\\[Console\\]::(Out\\.WriteLine|Error\\.WriteLine|WriteLine)", 
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "out-null", 
+      "regex": "\\|\\s*Out-Null", 
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "record-type", 
+      "regex": "\\brecord\\s+[A-Za-z_]", 
+      "appliesTo": ["csharp"] 
+    },
+    { 
+      "name": "null-coalescing", 
+      "warnOnly": true, 
+      "regex": "\\?\\?", 
+      "appliesTo": ["csharp"] 
+    }
+  ]
+}
