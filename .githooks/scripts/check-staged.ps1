@@ -11,8 +11,15 @@ function Get-Configuration
     
     $configRoot = (Get-Item '..\config').FullName
     $repoRoot = (Get-Item '..\..').FullName
+    $gitRoot = "\git"
+    $customRulesFolderPrefix = ".*githooks_rules.*"
+    $customRulesFolderSuffix = "config\rules\enabled"
     $configuration = Get-Content "$configRoot\configuration.json" | ConvertFrom-Json
     $configuration | Add-Member -MemberType NoteProperty -Name "ConfigRoot" -Value $configRoot
+    $configuration | Add-Member -MemberType NoteProperty -Name "GitRoot" -Value $gitRoot
+    
+    $configuration | Add-Member -MemberType NoteProperty -Name "CustomRulesFolderPrefix" -Value $customRulesFolderPrefix
+    $configuration | Add-Member -MemberType NoteProperty -Name "CustomRulesFolderSuffix" -Value $customRulesFolderSuffix
     $configuration | Add-Member -MemberType NoteProperty -Name "RepoRoot" -Value $repoRoot
     return $configuration
 }
@@ -24,7 +31,15 @@ function Get-RulesFromFile($file)
 function Add-RulesForLanguage($configuration, $languageName)
 {
     $rules = @()
-    $rulesFiles = Get-ChildItem "$($configuration.ConfigRoot)\rules\enabled" -File -Recurse
+    $rulesFiles = Get-ChildItem "$($configuration.ConfigRoot)\rules\enabled" -File -Filter "*.json"
+    
+    if (Test-Path $configuration.GitRoot)
+    {
+        $customRulesFolders = Get-ChildItem $configuration.GitRoot -Directory | ? { 
+                $_.Name -imatch $configuration.CustomRulesFolderPrefix
+        } 
+        $rulesFiles += $customRulesFolders |% { Get-ChildItem "$($_.FullName)\$($configuration.CustomRulesFolderSuffix)" -File -Filter "*.json" }
+    }
     $rulesFiles |%{
         $ruleFile = $_
         $ruleFileTag = $ruleFile.Name
