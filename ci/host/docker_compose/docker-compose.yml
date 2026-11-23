@@ -1,3 +1,24 @@
+x-report-server: &report-server
+  image: sqlserver-instance:latest
+  command: ["powershell", "-NoProfile", "-File", "C:\\payload\\installer\\report-server\\start.ps1"]
+  depends_on:
+    dbe14:
+      condition: service_started
+  healthcheck:
+    test: ["CMD", "powershell", "-NoProfile", "-Command", "if (Test-Path 'C:/node-ready.txt') { exit 0 }; exit 1"]
+    interval: 5s
+    timeout: 10s
+    retries: 5
+    start_period: 30s
+  volumes:
+    - type: bind
+      source: ..\..\..\src\sqlserver
+      target: C:\payload
+      read_only: true
+    - type: bind
+      source: ..\host_bind_mount\share
+      target: C:\share
+
 services:
 
   dbe14:
@@ -5,61 +26,43 @@ services:
     container_name: dbe14
     hostname: dbe14
     command: ["powershell", "-NoProfile", "-Command", "Start-Service MSSQLSERVER; while ($$true) { Start-Sleep -Seconds 60 }"]
+    healthcheck:
+      test: ["CMD", "powershell", "-NoProfile", "-Command", "if ((Get-Service MSSQLSERVER).Status -eq 'Running') { exit 0 }; exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - type: bind
         source: ..\..\..\src\sqlserver
         target: C:\payload
         read_only: true
       - type: bind
-        source: ..\..\host_bind_mount\share
+        source: ..\host_bind_mount\share
         target: C:\share
-    networks:
-      sqlnet:
-        ipv4_address: 172.30.0.20
 
-  ssrs-node-1:
-    image: sqlserver-instance:latest
-    container_name: ssrs-node-1
-    hostname: ssrs-node-1
-    command: ["powershell", "-NoProfile", "-Command", "Start-Service PowerBIReportServer; while ($$true) { Start-Sleep -Seconds 60 }"]
-    depends_on:
-      - dbe14
-    volumes:
-      - type: bind
-        source: ..\..\..\src\sqlserver
-        target: C:\payload
-        read_only: true
-      - type: bind
-        source: ..\..\host_bind_mount\share
-        target: C:\share
-    networks:
-      sqlnet:
-        ipv4_address: 172.30.0.21
+  dbe11:
+    <<: *report-server
+    container_name: dbe11
+    hostname: dbe11
 
-  ssrs-node-2:
-    image: sqlserver-instance:latest
-    container_name: ssrs-node-2
-    hostname: ssrs-node-2
-    command: ["powershell", "-NoProfile", "-Command", "Start-Service PowerBIReportServer; while ($$true) { Start-Sleep -Seconds 60 }"]
-    depends_on:
-      - dbe14
-    volumes:
-      - type: bind
-        source: ..\..\..\src\sqlserver
-        target: C:\payload
-        read_only: true
-      - type: bind
-        source: ..\..\host_bind_mount\share
-        target: C:\share
-    networks:
-      sqlnet:
-        ipv4_address: 172.30.0.22
+  dbe22:
+    <<: *report-server
+    container_name: dbe22
+    hostname: dbe22
+
+  dbe33:
+    <<: *report-server
+    container_name: dbe33
+    hostname: dbe33
+
+  dbe44:
+    <<: *report-server
+    container_name: dbe44
+    hostname: dbe44
 
 networks:
 
-  sqlnet:
+  default:
     name: sql-mvp
     driver: nat
-    ipam:
-      config:
-        - subnet: 172.30.0.0/24

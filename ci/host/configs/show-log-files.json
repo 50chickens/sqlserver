@@ -1,0 +1,20 @@
+{
+  "tailFiles": 3,
+  "tailLines": 80,
+  "logSources": [
+    {
+      "enabled": true,
+      "rootFolder": "logs",
+      "subFolderName": "",
+      "fileFilter": "*.log",
+      "description": "the output of the docker exec command that ran last"
+    },
+    {
+      "enabled": true,
+      "rootFolder": "host_bind_mount\\dbe14",
+      "subFolderName": "logs",
+      "fileFilter": "*",
+      "description": "the SQL Server setup log of the newest provisioning run"
+    }
+  ]
+}

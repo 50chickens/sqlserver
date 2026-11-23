@@ -2,6 +2,9 @@
   "mediaFolderPath": "C:\\host_bind_mount\\sqlsetup",
   "installerFileName": "setup.exe",
   "instanceName": "MSSQLSERVER",
+  "serviceName": "MSSQLSERVER",
   "sysAdminAccount": "BUILTIN\\Administrators",
+  "passwordPath": "C:\\share\\sql-password.txt",
+  "tcpPort": 1433,
   "successCodes": [0, 3010]
 }

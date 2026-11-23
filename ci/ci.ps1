@@ -13,10 +13,13 @@ function Get-Configuration
     $buildConfig      = Get-Content -Path "$hostRoot\configs\invoke-docker-build.json" -Raw | ConvertFrom-Json
     $deploymentRoot   = "$hostRoot\deployment"
     $scriptsToExecute = @(
-        [pscustomobject]@{ Enabled = $true; FilePath = "$deploymentRoot\invoke-media-copy.ps1" }
-        [pscustomobject]@{ Enabled = $true; FilePath = "$deploymentRoot\invoke-stage.ps1" }
-        [pscustomobject]@{ Enabled = $true; FilePath = "$deploymentRoot\invoke-docker-build.ps1" }
-        [pscustomobject]@{ Enabled = $true; FilePath = "$deploymentRoot\invoke-docker-host-exec.ps1" }
+        [pscustomobject]@{ Enabled = $true;  FilePath = "$deploymentRoot\invoke-secret-create.ps1" }
+        [pscustomobject]@{ Enabled = $true;  FilePath = "$deploymentRoot\invoke-media-copy.ps1" }
+        [pscustomobject]@{ Enabled = $true;  FilePath = "$deploymentRoot\invoke-stage.ps1" }
+        [pscustomobject]@{ Enabled = $true;  FilePath = "$deploymentRoot\invoke-docker-build.ps1" }
+        [pscustomobject]@{ Enabled = $true;  FilePath = "$deploymentRoot\invoke-docker-host-exec.ps1" }
+        [pscustomobject]@{ Enabled = $true;  FilePath = "$deploymentRoot\invoke-farm-lifecycle.ps1" }
+        [pscustomobject]@{ Enabled = $true;  FilePath = "$deploymentRoot\show-log-files.ps1" }
     )
 
     $configuration = [pscustomobject]@{}
@@ -39,7 +42,7 @@ function Invoke-PreflightCheck($configuration)
 function Invoke-BuildSteps($configuration)
 {
     $scriptsToExecute = $configuration.ScriptsToExecute
-    Write-Log "Found $(@($scriptsToExecute |? { $_.Enabled }).Count) enabled script(s) of $($scriptsToExecute.Count)"
+    Write-Log "Found $(($scriptsToExecute |? { $_.Enabled }).Count) enabled script(s) of $($scriptsToExecute.Count)"
 
     $scriptsToExecute |? { $_.Enabled } |% {
         $script = $_

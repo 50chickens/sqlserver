@@ -1,14 +1,41 @@
 {
   "imageName": "sqlserver-instance",
   "containerName": "sqlserver-provision",
-  "containerFolder": "C:\\sqlserver",
-  "containerMediaFolder": "C:\\host_bind_mount",
+  "serviceName": "dbe14",
+  "runStampFormat": "yyyyMMdd-HHmmss",
+  "containerScriptPath": "C:\\sqlserver\\scripts\\ci-host-bind-mount.ps1",
+  "hostBindMountFolderName": "host_bind_mount",
+  "payloadRelativePath": "..\\..\\..\\src\\sqlserver",
+  "logFolderName": "logs",
+  "bindMounts": [
+    {
+      "name": "logs",
+      "containerPath": "C:\\Program Files\\Microsoft SQL Server\\170\\Setup Bootstrap\\Log",
+      "readOnly": false,
+      "tail": true,
+      "logFilter": "Summary.txt"
+    },
+    {
+      "name": "media",
+      "containerPath": "C:\\host_bind_mount",
+      "readOnly": true,
+      "tail": false,
+      "logFilter": ""
+    },
+    {
+      "name": "payload",
+      "containerPath": "C:\\sqlserver",
+      "readOnly": true,
+      "tail": false,
+      "logFilter": ""
+    }
+  ],
   "logTailFiles": 3,
   "probes": [
-    { "kind": "service", "value": "MSSQLSERVER" },
-    { "kind": "service", "value": "MsDtsServer170" },
-    { "kind": "service", "value": "PowerBIReportServer" },
-    { "kind": "path", "value": "C:\\Program Files\\Microsoft Power BI Report Server\\PBIRS\\ReportServer\\bin\\ReportingServicesService.exe" },
-    { "kind": "path", "value": "C:\\Program Files\\Microsoft SQL Server\\170\\DTS\\Binn\\MsDtsSrvr.exe" }
+    { "probeType": "service", "value": "MSSQLSERVER" },
+    { "probeType": "service", "value": "MsDtsServer170" },
+    { "probeType": "service", "value": "PowerBIReportServer" },
+    { "probeType": "path", "value": "C:\\Program Files\\Microsoft Power BI Report Server\\PBIRS\\ReportServer\\bin\\ReportingServicesService.exe" },
+    { "probeType": "path", "value": "C:\\Program Files\\Microsoft SQL Server\\170\\DTS\\Binn\\MsDtsSrvr.exe" }
   ]
 }

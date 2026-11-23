@@ -2,19 +2,33 @@
   "mediaFolderPath": "C:\\host_bind_mount",
   "installerFileName": "PowerBIReportServer.exe",
   "instanceName": "PBIRS",
+  "serviceName": "PowerBIReportServer",
   "edition": "DEV",
   "databaseServerName": "dbe14",
   "databaseName": "ReportServer",
-  "databaseCredentialsType": 2,
+  "databaseCredentialsType": 1,
   "databaseUserName": "sa",
-  "databasePassword": "<set-by-operator>",
-  "encryptionKeyPassword": "<set-by-operator>",
+  "passwordPath": "C:\\share\\sql-password.txt",
   "encryptionKeySharePath": "C:\\share\\reportserver.snk",
   "lcid": 1033,
   "wmiNamespace": "root\\Microsoft\\SqlServer\\ReportServer\\RS_PBIRS\\V15\\Admin",
   "reportServerVirtualDirectory": "ReportServer",
   "portalVirtualDirectory": "Reports",
-  "reportServerUrl": "http://+:80/ReportServer",
-  "portalUrl": "http://+:80/Reports",
-  "successCodes": [0, 3010]
+  "reportServerConfigPath": "C:\\Program Files\\Microsoft Power BI Report Server\\PBIRS\\ReportServer\\RSReportServer.config",
+  "httpPort": 80,
+  "readyTimeoutSeconds": 60,
+  "reportServerUrl": "http://+:80",
+  "portalUrl": "http://+:80",
+  "successCodes": [
+    0,
+    3010
+  ],
+  "urlAclEndpoints": [
+    "http://+:80/ReportServer/",
+    "http://+:80/Reports/",
+    "http://+:80/PowerBI/",
+    "http://+:80/wopi/",
+    "http://localhost:8082/"
+  ],
+  "rpcReadyTimeoutSeconds": 300
 }

@@ -1,0 +1,17 @@
+{
+  "composePath": "C:\\docker\\docker-compose-windows-x86_64.exe",
+  "composeFilePath": "docker_compose\\docker-compose.yml",
+  "projectName": "sql-mvp",
+  "databaseContainer": "dbe14",
+  "databaseConfigureCommand": "C:\\payload\\installer\\sql-server\\configure.ps1",
+  "nodeConfigureCommand": "C:\\payload\\installer\\report-server\\configure.ps1",
+  "farmViewCommand": "C:\\payload\\installer\\report-server\\show-farm.ps1",
+  "passwordRelativePath": "host_bind_mount\\share\\sql-password.txt",
+  "sqlcmdPath": "C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\180\\Tools\\Binn\\SQLCMD.EXE",
+  "reportDatabase": "ReportServer",
+  "primaryNode": "dbe11",
+  "spareNodes": [ "dbe22", "dbe33", "dbe44" ],
+  "farmSize": 3,
+  "nodeWaitTimeoutSeconds": 420,
+  "commandTimeoutSeconds": 420
+}
