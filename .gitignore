@@ -72,11 +72,10 @@ temporary_assets/**
 **/ghidra*
 *.zip
 cached_assets/
+temporary_assets/
 *.lock
 output/
 temp/
 cursus/
 .vs
-ci/host/host_bind_mount/
-ci/host/docker_build/sqlserver/
-ci/host/logs/
+ci/
