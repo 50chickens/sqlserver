@@ -26,37 +26,40 @@ function Add-RulesForLanguage($configuration, $languageName)
     $rules = @()
     $rulesFiles = Get-ChildItem "$($configuration.ConfigRoot)\rules\enabled" -File -Recurse
     $rulesFiles |%{
-        $rulesFromFile = Get-RulesFromFile $_
-        $rules += $rulesFromFile.rules |? { $_.appliesTo -eq $languageName }
+        $ruleFile = $_
+        $ruleFileTag = $ruleFile.Name
+        $rulesFromFile = Get-RulesFromFile $ruleFile
+        $rulesFromFile.rules |%{
+            $ruleAppliesToAll = $null -eq $_.appliesTo
+            $ruleAppliesToLanguage = $_.appliesTo -eq $languageName
+            if ($ruleAppliesToAll -or $ruleAppliesToLanguage)
+            {
+                $rule = $_
+                $rule | Add-Member -MemberType NoteProperty -Name "ruleFileTag" -Value $ruleFileTag -Force
+                $rules += $rule
+            }
+        }
     }
     return $rules
 }
 function Get-FilesInScopeForChange($configuration, $files)
 {
     $included = $configuration.Include
-    $includedFiles = $files |? {
-        $fileName = $_.Name
-        $matchingGlob = $included |? { $fileName -like $_ } | Select-Object -First 1
-        $null -ne $matchingGlob
-    }
+    $includedFiles = $files |? { $_ -imatch $included }
     $excluded = $configuration.Exclude
-    $files = $includedFiles |? {
-        $fileName = $_.Name
-        $matchingGlob = $excluded |? { $fileName -like $_ } | Select-Object -First 1
-        $null -eq $matchingGlob
-    }
+    $files = $includedFiles |? { !($_ -imatch $excluded) }
     return $files
 }
 function Get-FilesInScope($configuration)
 {
     $repoRoot = $configuration.RepoRoot
-    $filesChangedInCommit = git -C $repoRoot diff --cached --name-only --diff-filter=ACMR |% { Get-Item "$repoRoot\$_" }
+    $filesChangedInCommit = git -C $repoRoot diff --cached --name-only --diff-filter=ACMR
     $fileInScope = Get-FilesInScopeForChange $configuration $filesChangedInCommit
     return $fileInScope
 }
 function Add-RuntimeConfiguration($configuration)
 {
-    $filesInScope = @(Get-FilesInScope $configuration)
+    $filesInScope = Get-FilesInScope $configuration
     $configuration | Add-Member -MemberType NoteProperty -Name "FilesInScope" -Value $filesInScope -Force
     return $configuration
 }
@@ -69,13 +72,7 @@ function Invoke-CheckFile($file, $rules)
 }
 function Get-LanguageNameFromFileName($configuration, $file)
 {
-    
-    $fileName = $file.Name
-    $language = $configuration.languages |? {
-        $languageGlobs = $_.globs
-        $matchingGlob = $languageGlobs |? { $fileName -like $_ } | Select-Object -First 1
-        $null -ne $matchingGlob
-    }
+    $language = $configuration.languages |? { $file -imatch $_.globs }
     $languageName = $language.name
     return $languageName
 }
@@ -91,7 +88,7 @@ function Test-FileIsExcluded($configuration, $file)
 }
 function Get-LineNumbers($content, $regex)
 {
-    $match = [regex]::Match($content, $regex)
+    $match = [regex]::Match($content, $regex, "IgnoreCase")
     $linesBefore = $content.Substring(0, $match.Index) -split "`n"
     $matchedLines = $match.Value -split "`n"
     $firstLine = $linesBefore.Count
@@ -109,11 +106,11 @@ function Get-ViolationsForContent($file, $lineNumber, $content, $rules)
         HasViolations = $false
         Violations = @()
     }
-    $rules |%{
+    $rules |? { $null -ne $_ } |%{
         $rule = $_
         Write-Verbose "Checking rule $($rule.name)"
-        $matchedAllowed = ($rule.allowedRegex) -and ($content -match $rule.allowedRegex)
-        $matchedBanned =  $content -match $rule.regex 
+        $matchedAllowed = ($rule.allowedRegex) -and ($content -imatch $rule.allowedRegex)
+        $matchedBanned =  $content -imatch $rule.regex 
         $contentHasViolations = $matchedBanned -and !$matchedAllowed
         if ($contentHasViolations)
         { 
@@ -125,7 +122,8 @@ function Get-ViolationsForContent($file, $lineNumber, $content, $rules)
             }
             $contentViolation = [pscustomobject]@{
                 RuleName = $rule.name
-                FileName = $file.Name
+                RuleFileTag = $rule.ruleFileTag
+                FileName = $file
                 LineNumbers = $lineNumbers
             }
             $contentViolations.Violations += $contentViolation
@@ -133,11 +131,12 @@ function Get-ViolationsForContent($file, $lineNumber, $content, $rules)
     }
     return $contentViolations
 }
-function Invoke-CheckFile($file, $rules)
+function Invoke-CheckFile($configuration, $file, $rules)
 {
+    $filePath = "$($configuration.RepoRoot)\$file"
     $violations = @()
     $lineNumber = 0
-    Get-Content $file.FullName |% {
+    Get-Content $filePath |% {
         $content = $_
         $lineNumber++
         $singleLineRules = $rules |? { !$_.multiline }
@@ -147,7 +146,7 @@ function Invoke-CheckFile($file, $rules)
             $violations += $contentViolations.Violations 
         }
     }
-    $content = Get-Content -Raw $file.FullName
+    $content = Get-Content -Raw $filePath
     $multiLineRules = $rules |? { $_.multiline }
     $contentViolations = Get-ViolationsForContent $file $null $content $multiLineRules
     if ($contentViolations.HasViolations) { 
@@ -156,25 +155,50 @@ function Invoke-CheckFile($file, $rules)
     return $violations
 }
 
+function Invoke-CheckBannedWrites($configuration)
+{
+    $bannedWrites = $configuration.bannedWrites
+    $repoRoot = $configuration.RepoRoot
+    $filesChanged = git -C $repoRoot diff --cached --name-only --diff-filter=ACMR
+    $bannedFiles = $filesChanged |? { $_ -imatch $bannedWrites }
+    if (!$bannedFiles)
+    {
+        return
+    }
+    $bannedFiles |% {
+        Write-Log "Banned write: $_"
+    }
+    throw "Commit blocked: $($bannedFiles.Count) banned write(s) in the staged changes."
+}
 function Invoke-CommitGate($configuration)
 {
     $filesInScope = $configuration.FilesInScope #we have already filtered in Add-RuntimeConfiguration.
+    if (!$filesInScope)
+    {
+        return
+    }
     $violations = @()
     $filesInScope |%{
         $file = $_
         $languageName = Get-LanguageNameFromFileName $configuration $file
         $rules = Add-RulesForLanguage $configuration $languageName
-        $violations += Invoke-CheckFile $file $rules
+        $fileViolations = @(Invoke-CheckFile $configuration $file $rules)
+        $violations += $fileViolations
     }
     $violations |%{
         $violation = $_
-        Write-Log "Violation in $($violation.FileName). Line number(s) $($violation.LineNumbers). Rule Name: $($violation.RuleName)"
+        $fileName = $violation.FileName
+        $fullRelativeFilePathName = $fileName #relative path from the root of the repo.
+        $ruleName = $violation.RuleName
+        $ruleFileName = $violation.RuleFileTag
+        Write-Log "Violation in $($fullRelativeFilePathName). Line number(s) $($violation.LineNumbers). Rule Name: $($ruleName) in rule file $($ruleFileName)"
     }
     if ($violations.Count -gt 0)
     {
-        exit 1
+        throw "Commit blocked: $($violations.Count) violation(s) in the staged changes."
     }
 }
 $configuration = Get-Configuration
 $configuration = Add-RuntimeConfiguration $configuration
+Invoke-CheckBannedWrites $configuration
 Invoke-CommitGate $configuration
