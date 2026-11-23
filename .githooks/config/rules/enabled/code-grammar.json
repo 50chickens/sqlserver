@@ -1,0 +1,10 @@
+{
+  "rules": [
+    { 
+      "name": "code-banned-words",
+      "regex": "kind", 
+      "description": "dont use kind in code", 
+      "appliesTo": ["csharp"] 
+    }
+  ]
+}

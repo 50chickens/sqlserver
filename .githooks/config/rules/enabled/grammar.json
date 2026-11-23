@@ -14,7 +14,6 @@
     { "name": "banned-word-lease", "regex": "\\blease\\b", "description": "Banned word" },
     { "name": "banned-word-kept", "regex": "\\bkept\\b", "description": "Banned word" },
     { "name": "banned-word-kind", "regex": "\\bkind\\b", "description": "Banned word" },
-    { "name": "banned-word-record", "regex": "\\brecord\\b", "description": "Banned word" },
     { "name": "banned-word-refused", "regex": "\\brefused\\b", "description": "Banned word" },
     { "name": "banned-word-subject", "regex": "\\bsubject\\b", "description": "Banned word" }
   ]

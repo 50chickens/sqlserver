@@ -1,0 +1,24 @@
+{
+  "rules": [
+    { 
+      "name": "useless-returns", 
+      "regex": "return ''", 
+      "description": "Avoid useless returns",
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "variables-to-arrays", 
+      "regex": "\\@\\(\\$", 
+      "description": "Dont force arrays",
+      "appliesTo": ["powershell"] 
+    },
+    {
+      "name": "array-from-commandlet",
+      "regex": "@\\(Get",
+      "description": "Dont enclose cmdlet output in an array.",
+      "appliesTo": ["powershell"] 
+    }
+    
+  ]
+}
+

@@ -1,0 +1,5 @@
+{
+  "rules": [
+    { "name": "test-netconnection", "regex": "Test-NetConnection\\b", "description": "Probe a port with System.Net.Sockets.TcpClient and a Wait cap", "appliesTo": ["powershell"] }
+  ]
+}

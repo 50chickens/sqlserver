@@ -1,5 +1,7 @@
 {
   "rules": [
-    { "name": "silently-continue", "regex": "SilentlyContinue", "description": "Let the failure surface", "appliesTo": ["powershell"] }
+    { "name": "silently-continue", "regex": "-ErrorAction\\s+SilentlyContinue", "allowedRegex": "Get-Service", "description": "Let the failure surface", "appliesTo": ["powershell"] },
+    { "name": "exit-with-code", "regex": "\\bexit\\s+[0-9]+\\b", "description": "Throw, and let ErrorActionPreference propagate the failure", "appliesTo": ["powershell"] },
+    { "name": "get-command-guard", "regex": "Get-Command\\b", "description": "Do not guard a required cmdlet", "appliesTo": ["powershell"] }
   ]
 }

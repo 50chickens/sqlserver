@@ -1,0 +1,5 @@
+{
+  "rules": [
+    { "name": "for-each-object", "regex": "ForEach-Object", "description": "Iterate with the % alias pipeline form", "appliesTo": ["powershell"] }
+  ]
+}

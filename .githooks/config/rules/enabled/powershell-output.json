@@ -1,6 +1,7 @@
 {
   "rules": [
     { "name": "write-output", "regex": "Write-Output\\b", "description": "Report through Write-Log", "appliesTo": ["powershell"] },
-    { "name": "select-string", "regex": "Select-String\\b", "description": "Search by script rather than in the terminal", "appliesTo": ["powershell"] }
+    { "name": "select-string", "regex": "Select-String\\b", "description": "Search by script rather than in the terminal", "appliesTo": ["powershell"] },
+    { "name": "out-file", "regex": "Out-File\\b", "description": "Do not redirect or filter script output", "appliesTo": ["powershell"] }
   ]
 }

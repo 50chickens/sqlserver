@@ -1,0 +1,5 @@
+{
+  "rules": [
+    { "name": "test-fixture", "regex": "\\[TestFixture\\]", "description": "Use the timed fixture", "appliesTo": ["csharp"] }
+  ]
+}

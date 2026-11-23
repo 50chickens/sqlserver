@@ -31,6 +31,18 @@
       "appliesTo": ["powershell"] 
     },
     { 
+      "name": "split-path", 
+      "regex": "Split-Path\\b", 
+      "description": "Resolve the path in Get-Configuration", 
+      "appliesTo": ["powershell"] 
+    },
+    { 
+      "name": "dotnet-io-class", 
+      "regex": "\\[System\\.IO\\.(Path|File|Directory)\\]::", 
+      "description": "Use the PowerShell cmdlet that does the same work", 
+      "appliesTo": ["powershell"] 
+    },
+    { 
       "name": "console-write", 
       "regex": "\\[Console\\]::(Out\\.WriteLine|Error\\.WriteLine|WriteLine)", 
       "appliesTo": ["powershell"] 

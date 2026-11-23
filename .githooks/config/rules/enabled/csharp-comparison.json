@@ -1,0 +1,6 @@
+{
+  "rules": [
+    { "name": "comparison-interface-comparable", "regex": "\\bIComparable\\b", "description": "Write the comparison as an extension method", "appliesTo": ["csharp"] },
+    { "name": "comparison-interface-equatable", "regex": "\\bIEquatable\\b", "description": "Write the comparison as an extension method", "appliesTo": ["csharp"] }
+  ]
+}

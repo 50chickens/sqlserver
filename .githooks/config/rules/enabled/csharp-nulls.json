@@ -1,6 +1,7 @@
 {
   "rules": [
     { "name": "null-comparison-is-null", "regex": "\\bis null\\b", "description": "Compare with a predicate extension method", "appliesTo": ["csharp"] },
-    { "name": "null-comparison-equals-null", "regex": "==\\s*null", "description": "Compare with a predicate extension method", "appliesTo": ["csharp"] }
+    { "name": "null-comparison-equals-null", "regex": "==\\s*null", "description": "Compare with a predicate extension method", "appliesTo": ["csharp"] },
+    { "name": "null-comparison-not-equals-null", "regex": "!=\\s*null", "description": "Compare with a predicate extension method", "appliesTo": ["csharp"] }
   ]
 }
