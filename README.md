@@ -29,5 +29,7 @@ is planned only after it has merged, so a plan is reviewed and checked before it
 The installation contract for the SQL features, and what proves each one is present, is
 [`docs\implementation\sql-feature-installation.md`](docs/implementation/sql-feature-installation.md).
 
+The components that let a report server node or a database node be replaced without losing service, and the part each one provides, are in [`docs\implementation\ssrs_failover.md`](docs/implementation/ssrs_failover.md).
+
 The domain identity contract for the containerised engine, and what proves each identity is the one
 intended, is [`docs\kerberos\domain-authentication.md`](docs/kerberos/domain-authentication.md).
